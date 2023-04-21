@@ -9,16 +9,22 @@ import UIKit
 
 class PetListViewController: UIViewController {
 
+    @IBOutlet weak var petListRandomImage: UIImageView!
     @IBOutlet weak var petListTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         PetController.shared.fetchPet()
+       
+        
+       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         petListTableView.reloadData()
+        
     }
     
     

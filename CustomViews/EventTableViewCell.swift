@@ -8,6 +8,8 @@
 import UIKit
 
 class EventTableViewCell: UITableViewCell {
+    
+    private var event: Event?
 
     @IBOutlet weak var eventNameLabel: UILabel!
     @IBOutlet weak var petNameLAbel: UILabel!
@@ -15,8 +17,12 @@ class EventTableViewCell: UITableViewCell {
     
     
     func configure(with event: Event){
+        self.event = event
         eventNameLabel.text = event.eventName
         petNameLAbel.text = event.pet?.name
-        eventDateLabel.text = "\(event.eventDate)"
+        eventDateLabel.text = DateFormatter.eventTime.string(from: event.eventDate ?? Date())
+        
     }
 }
+
+

@@ -14,11 +14,13 @@ class EventListViewController: UIViewController {
         super.viewDidLoad()
 
         EventController.shared.fetchEvent()
+        eventListTableView.delegate = self
+        eventListTableView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        /*eventListTableView.reloadData()*/
+        eventListTableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -47,7 +49,7 @@ extension EventListViewController: UITableViewDataSource{
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "eventCell", for: indexPath) as? EventTableViewCell
         else { return UITableViewCell() }
         let event = EventController.shared.events[indexPath.row]
-        
+            print(event)
         cell.configure(with: event)
         
         return cell

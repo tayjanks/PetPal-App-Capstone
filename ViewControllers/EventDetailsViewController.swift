@@ -9,6 +9,8 @@ import UIKit
 
 class EventDetailsViewController: UIViewController {
    var pickerData = PetController.shared.pets
+    var selectedPet: Pet?
+    var selectedFrequency: String?
     
     @IBOutlet weak var eventNameTextField: UITextField!
     
@@ -33,6 +35,8 @@ class EventDetailsViewController: UIViewController {
             title = "Update Event"
             eventNameTextField.text = event.eventName
             eventDatePicker.date = event.eventDate ?? Date()
+            selectedPet = event.pet
+            selectedFrequency = event.frequency
             
             
             
@@ -45,32 +49,31 @@ class EventDetailsViewController: UIViewController {
 
     
     
-    /*@IBAction func saveEventButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func saveEventButtonTapped(_ sender: UIBarButtonItem) {
         guard let eventName = eventNameTextField.text,
-              let eventDate = eventDatePicker.date,
-              let frequency = frequencyPickerView.row
-                let pet = petAssignedToEventPickerView
+              let frequency = selectedFrequency,
+                let pet = selectedPet,
                 !eventName.isEmpty
         else { return }
-        
+        let eventDate = eventDatePicker.date
         if let event = event {
-            EventController.shared.updateEvent ()
+            EventController.shared.updateEvent (event: event, eventName: eventName, frequency: frequency, eventDate: eventDate, pet: pet)
             
         } else {
-            EventController.shared.create()
+            EventController.shared.createEvent(eventName: eventName, frequency: frequency, eventDate: eventDate, pet: pet)
         
         
+    
+    }
         navigationController?.popViewController(animated: true)
     }
-    
-    } */
     
 
 }
 
+// MARK: Custom Picker View
 
-
-extension EventDetailsViewController: UIPickerViewDataSource {
+extension EventDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -83,26 +86,41 @@ extension EventDetailsViewController: UIPickerViewDataSource {
         }
     }
     
-    
-    
-}
-
-
-extension EventDetailsViewController: UIPickerViewDelegate {
-    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView.tag == 2 {
             
             let indexPath = NSIndexPath(row: row, section: 0)
             let pet = PetController.shared.pets[indexPath.row]
             var petName: AnyObject? = pet.value(forKey: "name") as AnyObject
-            return petName as! String}
-        else { return "\(picker1Options[row])"}
+            if  selectedPet != nil && selectedPet == pet {
+                pickerView.selectRow(row, inComponent: 0, animated: true)
+            }
+            return petName as? String
+        } else {
+            if selectedFrequency != nil && selectedFrequency == picker1Options[row] {
+                pickerView.selectRow(row, inComponent: 0, animated: true)
+            }
+            
+            return "\(picker1Options[row])"
+            
             
         }
-                
-       
+        
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView.tag == 2 {
+            let pet = PetController.shared.pets[row]
+            self.selectedPet = pet
+        } else if pickerView.tag == 1 {
+            let frequency = picker1Options[row]
+            self.selectedFrequency = frequency
+            
         }
+    }
+    
+}
     
 
 
