@@ -20,8 +20,8 @@ class PetController {
         return request
     }()
     
-    func create(name:String, breed: String, diet: String, gender: String, notes: String,  species: String, vet: String) {
-        let pet = Pet(name: name, breed: breed, diet: diet, gender: gender, notes: notes, species: species, vet: vet)
+    func create(name:String, breed: String, diet: String, gender: String, notes: String,  species: String, vet: String, img: String) {
+        let pet = Pet(name: name, breed: breed, diet: diet, gender: gender, notes: notes, species: species, vet: vet, img: img)
         pets.append(pet)
         CoreDataStack.saveContext()
     }
@@ -31,7 +31,7 @@ class PetController {
         self.pets = pets
     }
     
-    func updatePet(pet:Pet, name: String, breed: String, diet: String, gender: String, notes: String, species: String, vet: String) {
+    func updatePet(pet:Pet, name: String, breed: String, diet: String, gender: String, notes: String, species: String, vet: String, img:String) {
         pet.name = name
         pet.breed = breed
         pet.diet = diet
@@ -39,14 +39,16 @@ class PetController {
         pet.notes = notes
         pet.species = species
         pet.vet = vet
+        pet.img = img
         CoreDataStack.saveContext()
     }
     
-    func deletePet(_ pet: Pet) {
-       if let index = pets.firstIndex(of: pet){
-            pets.remove(at: index)
-        } 
     
+    func deletePet(_ pet: Pet) {
+        if let index = pets.firstIndex(of: pet){
+            pets.remove(at: index)
+        }
+        
         CoreDataStack.context.delete(pet)
         CoreDataStack.saveContext()
         

@@ -22,7 +22,7 @@ class PetDetailsViewController: UIViewController {
     
     @IBOutlet weak var vetTextField: UITextField!
     @IBOutlet weak var notesTextField: UITextField!
-    @IBOutlet weak var petPhotoImg: UIImageView!
+    @IBOutlet weak var petImg: UIButton!
     
     var pet: Pet?
     
@@ -38,14 +38,21 @@ class PetDetailsViewController: UIViewController {
             dietTextField.text = pet.diet
             vetTextField.text = pet.vet
             notesTextField.text = pet.notes
+            petImg.setTitle(pet.img, for: .normal)
         } else {
             title = "Add Pet"
         }
         
-
+            
     }
     
     
+    @IBAction func petDetailsImgButtonTapped(_ sender: Any) {guard let PetImageViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "petImageViewController") as? PetImageViewController else { return }
+        
+        PetImageViewController.delegate = self
+        
+        navigationController?.present(PetImageViewController, animated: true, completion: nil)
+    }
     
 
     @IBAction func petDetailsSaveButtonTapped(_ sender: UIButton) {
@@ -56,17 +63,25 @@ class PetDetailsViewController: UIViewController {
               let notes = notesTextField.text,
               let species = speciesTextField.text,
               let vet = vetTextField.text,
+              let img = petImg.titleLabel?.text,
               !name.isEmpty
         else { return }
         
         if let pet = pet {
-            PetController.shared.updatePet(pet: pet, name: name, breed: breed, diet: diet, gender: gender, notes: notes, species: species, vet: vet)
+            PetController.shared.updatePet(pet: pet, name: name, breed: breed, diet: diet, gender: gender, notes: notes, species: species, vet: vet, img:img)
             
         } else {
-            PetController.shared.create(name: name, breed: breed, diet: diet, gender: gender, notes: notes, species: species, vet: vet)
+            PetController.shared.create(name: name, breed: breed, diet: diet, gender: gender, notes: notes, species: species, vet: vet, img:img)
         }
         
         navigationController?.popViewController(animated: true)
     }
     
 }
+
+extension PetDetailsViewController: PetImageViewControllerDelegate {
+    func imgButtonTapped(with emoji: String) {
+        petImg.setTitle(emoji, for: .normal)
+    }
+}
+

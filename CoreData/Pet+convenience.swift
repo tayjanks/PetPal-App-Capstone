@@ -8,7 +8,7 @@
 import CoreData
 
 extension Pet {
-    convenience init(name: String, breed: String, diet: String, gender: String, notes: String, species: String, vet: String, context: NSManagedObjectContext = CoreDataStack.context) {
+    convenience init(name: String, breed: String, diet: String, gender: String, notes: String, species: String, vet: String, img: String, context: NSManagedObjectContext = CoreDataStack.context) {
         self.init(context: context)
         self.id = UUID().uuidString
         self.name = name
@@ -18,5 +18,6 @@ extension Pet {
         self.notes = notes
         self.species = species
         self.vet = vet
+        self.img = img
     }
 }
