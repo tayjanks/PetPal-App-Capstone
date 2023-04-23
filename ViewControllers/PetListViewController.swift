@@ -7,23 +7,36 @@
 
 import UIKit
 
-class PetListViewController: UIViewController {
 
+
+class PetListViewController: UIViewController {
+    
     @IBOutlet weak var petListRandomImage: UIImageView!
     @IBOutlet weak var petListTableView: UITableView!
+    
+    
+    @IBOutlet weak var petListFact: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         PetController.shared.fetchPet()
-       
         
-       
+      RandomCatFactController.shared.getFact()
+        petListFact.text = RandomCatFactController.shared.data.text
         
+    
+    
     }
+                
+
+
+        
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         petListTableView.reloadData()
+        RandomCatFactController.shared.getFact()
+    
         
     }
     
@@ -32,9 +45,17 @@ class PetListViewController: UIViewController {
     }
     
     
+    @IBAction func refreshFactButton(_ sender: Any) {
+        RandomCatFactController.shared.getFact()
+        self.petListFact.text = RandomCatFactController.shared.data.text
+        
+        
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -47,7 +68,11 @@ class PetListViewController: UIViewController {
             }
             
         }
-    }
+    
+
+}
+
+
 
 extension PetListViewController: UITableViewDataSource{
     
@@ -80,6 +105,10 @@ extension PetListViewController: UITableViewDataSource{
   
     
 }
+
+
+
+
     
     extension PetListViewController: UITableViewDelegate {
         
