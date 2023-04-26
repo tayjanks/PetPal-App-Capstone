@@ -9,12 +9,12 @@
 import UIKit
 
 class RandomCatFactController {
-    var data = Fact(id: "0", text: "Want a fun animal fact?!")
+    var data = Fact(text: "Want a fun animal fact?!", length: 0)
     static let shared = RandomCatFactController()
     
     func getFact(){
 
-        let urlString = "https://cat-fact.herokuapp.com/facts/random"
+        let urlString = "https://catfact.ninja/fact"
         let url = URL(string: urlString)
         
         URLSession.shared.dataTask(with: url!) {data, _, error in
@@ -25,7 +25,7 @@ class RandomCatFactController {
                         let decodedData = try decoder.decode(Fact.self, from: data)
                         self.data = decodedData
                     } catch {
-                        print("Error with JSON Data")
+                        print("Error with Cat Fact JSON Data")
                     }
                 }
             }

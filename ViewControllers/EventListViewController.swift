@@ -9,6 +9,7 @@ import UIKit
 
 class EventListViewController: UIViewController {
 
+  
     @IBOutlet weak var eventListTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +17,10 @@ class EventListViewController: UIViewController {
         EventController.shared.fetchEvent()
         eventListTableView.delegate = self
         eventListTableView.dataSource = self
+        
+        
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -23,6 +28,7 @@ class EventListViewController: UIViewController {
         eventListTableView.reloadData()
     }
     
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toEventDetails",
            let indexPath = eventListTableView.indexPathForSelectedRow,

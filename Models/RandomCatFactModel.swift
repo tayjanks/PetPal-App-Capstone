@@ -8,12 +8,14 @@
 import Foundation
 
 struct Fact: Decodable {
-    let id: String
     let text: String
+    let length: Double
+    
     
     enum CodingKeys: String, CodingKey {
-        case id = "_id"
-        case text = "text"
+        case text = "fact"
+        case length = "length"
+        
     }
 }
   
